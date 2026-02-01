@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bản đồ quán cà phê</title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Bản đồ các quán cà phê</h2>
+<button onclick="getUserLocation()">
+    📍 Tìm quán gần tôi
+</button>
+<br><br>
+
+<!-- có -->
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // 1. khởi tạo map
+    var map = L.map('map').setView([10.7765, 106.7009], 14);
+
+    // 2. title layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // 3. dữ liệu từ django
+    var cafes = [
+        {% for cafe in cafes %}
+        {
+            name: "{{ cafe.name }}",
+            address: "{{ cafe.address }}",
+            lat: {{ cafe.latitude }},
+            lng: {{ cafe.longitude }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // 4. vẽ marker
+    cafes.forEach(function(cafe) {
+        L.marker([cafe.lat, cafe.lng])
+            .addTo(map)
+            .bindPopup(
+                "<b>" + cafe.name + "</b><br>" + cafe.address
+            );
+    });
+
+
+// hàm lấy vị trí người dùng (tool 1)
+function getUserLocation() {
+    if (!navigator.geolocation) {
+        alert("Trình duyệt không hỗ trợ định vị");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+
+            findNearestCafe(userLat, userLng);
+        },
+        function() {
+            alert("Không lấy được vị trí của bạn");
+        }
+    );
+}
+
+// hàm tính khoảng cách (tool 1 )
+function getDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371; // bán kính Trái Đất (km)
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+// tìm quán gần nhất ( tool 1)
+function findNearestCafe(userLat, userLng) {
+    let nearestCafe = null;
+    let minDistance = Infinity;
+
+    cafes.forEach(cafe => {
+        const distance = getDistance(
+            userLat, userLng,
+            cafe.lat, cafe.lng
+        );
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearestCafe = cafe;
+        }
+    });
+
+    if (nearestCafe) {
+        showNearestCafe(userLat, userLng, nearestCafe, minDistance);
+    }
+}
+
+
+// hiển thị highlight và zoom ( tool 1)
+function showNearestCafe(userLat, userLng, cafe, distance) {
+
+    // Marker vị trí người dùng
+    L.marker([userLat, userLng], { icon: L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+        iconSize: [25, 25]
+    })})
+    .addTo(map)
+    .bindPopup("📍 Vị trí của bạn")
+    .openPopup();
+
+    // Marker quán gần nhất
+    L.marker([cafe.lat, cafe.lng])
+        .addTo(map)
+        .bindPopup(
+            "<b>☕ Quán gần nhất:</b><br>" +
+            cafe.name +
+            "<br>Khoảng cách: " +
+            distance.toFixed(2) + " km"
+        )
+        .openPopup();
+
+    // Zoom map
+    map.setView([cafe.lat, cafe.lng], 15);
+}
+</script>
+
+</body>
+</html>

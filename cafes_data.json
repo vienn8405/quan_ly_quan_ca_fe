@@ -1,0 +1,79 @@
+[
+{
+  "model": "cafes.cafeshop",
+  "pk": 2,
+  "fields": {
+    "name": "Highlands Coffee Nguyễn Huệ",
+    "address": "66 Nguyễn Huệ, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.77474,
+    "longitude": 106.70415,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 3,
+  "fields": {
+    "name": "FAM COFFEE - PASTEUR",
+    "address": "95 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+    "latitude": 10.77747,
+    "longitude": 106.69909,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 4,
+  "fields": {
+    "name": "Trung Nguyên Legend Café",
+    "address": "219 Lý Tự Trọng, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh 760000, Việt Nam",
+    "latitude": 10.77287,
+    "longitude": 106.69579,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 5,
+  "fields": {
+    "name": "Phê La Cách Mạng Tháng 8",
+    "address": "60-62 Cách Mạng Tháng Tám, Phường 6, Quận 3, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.77443,
+    "longitude": 106.68886,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 6,
+  "fields": {
+    "name": "Tiệm cà phê Sài Gòn Xưa",
+    "address": "81 Đ. Số 11, Khu dân cư Him Lam, Bình Chánh, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7321,
+    "longitude": 106.69412,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 7,
+  "fields": {
+    "name": "1988 Tea & Coffee",
+    "address": "1468 Đ. Chánh Hưng, Bình Hưng, Bình Chánh, Thành phố Hồ Chí Minh, Việt Nam",
+    "latitude": 10.71809,
+    "longitude": 106.69086,
+    "is_active": true
+  }
+},
+{
+  "model": "cafes.cafeshop",
+  "pk": 9,
+  "fields": {
+    "name": "The Coffee House - Nguyễn Thị Thập 2",
+    "address": "492 Đ. Nguyễn Thị Thập, Tân Quy, Quận 7, Thành phố Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.74322,
+    "longitude": 106.71129,
+    "is_active": true
+  }
+}
+]
